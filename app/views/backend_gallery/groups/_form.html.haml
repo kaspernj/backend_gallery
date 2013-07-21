@@ -1,0 +1,6 @@
+= simple_form_for @group do |f|
+  = f.input :title, :as => :string
+  
+  = button_tag :class => ["btn"] do
+    %i.icon-pencil
+    = _("Save")
