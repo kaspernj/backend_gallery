@@ -1,0 +1,9 @@
+%h1= _("Editing picture: %{title}", :title => @picture.title)
+
+= render 'form'
+
+= link_to group_picture_path(@group, @picture), :class => "btn" do
+  = _("Show")
+
+= link_to group_pictures_path(@group), :class => "btn" do
+  = _("Back")

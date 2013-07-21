@@ -1,0 +1,28 @@
+%h1= _("Listing pictures for: %{title}", :title => @group.title)
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th= _("ID")
+      %th= _("User")
+      %th= _("Actions")
+  %tbody
+    - @pictures.each do |picture|
+      %tr
+        %td= picture.id
+        %td= picture.user_link
+        %td
+          = link_to group_picture_path(@group, picture), :class => ["btn", "btn-mini"] do
+            = _("Show")
+          
+          = link_to edit_group_picture_path(@group, picture), :class => ["btn", "btn-mini"] do
+            %i.icon-pencil
+            = _("Edit")
+          
+          = link_to group_picture_path(@group, picture), method: :delete, data: { confirm: _('Are you sure?') }, :class => ["btn", "btn-mini", "btn-danger"] do
+            %i.icon-remove
+            = _("Delete")
+
+= link_to new_group_picture_path(@group), :class => "btn" do
+  %i.icon-pencil
+  = _("New picture")

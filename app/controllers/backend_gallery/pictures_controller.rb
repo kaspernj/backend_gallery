@@ -24,10 +24,15 @@ module BackendGallery
 
     # POST /pictures
     def create
-      @picture = Picture.new(picture_params)
+      pic = params[:picture].delete(:picture)
+      title = params[:picture].delete(:title)
+      
+      @picture = Picture.new(params[:picture])
+      @picture.title = title
 
       if @picture.save
-        redirect_to @picture, notice: 'Picture was successfully created.'
+        @picture.set_from_upload(pic)
+        redirect_to group_picture_path(@group, @picture), notice: 'Picture was successfully created.'
       else
         render action: 'new'
       end
@@ -35,8 +40,13 @@ module BackendGallery
 
     # PATCH/PUT /pictures/1
     def update
-      if @picture.update(picture_params)
-        redirect_to @picture, notice: 'Picture was successfully updated.'
+      pic = params[:picture].delete(:picture)
+      @picture.title = params[:picture].delete(:title)
+      
+      if @picture.update(params[:picture])
+        @picture.set_from_upload(pic) if pic
+        
+        redirect_to group_picture_path(@group, @picture), notice: 'Picture was successfully updated.'
       else
         render action: 'edit'
       end
@@ -45,7 +55,7 @@ module BackendGallery
     # DELETE /pictures/1
     def destroy
       @picture.destroy
-      redirect_to pictures_url, notice: 'Picture was successfully destroyed.'
+      redirect_to group_pictures_url(@group), notice: 'Picture was successfully destroyed.'
     end
 
     private
